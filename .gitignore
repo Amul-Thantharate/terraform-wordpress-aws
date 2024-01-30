@@ -36,3 +36,4 @@ terraform.rc
 *.pem
 *.pub
 terraform
+.terraform.lock.hcl
