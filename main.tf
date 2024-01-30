@@ -88,13 +88,13 @@ resource "aws_instance" "wordpress" {
     }
 
     provisioner "file" {
-        source      = "work.pem"
-        destination = "/home/ec2-user/work.pem"
+        source      = "${var.key_name}.pem"
+        destination = "/home/ec2-user/${var.key_name}.pem"
     }
 
     provisioner "remote-exec" {
     inline = [
-            "chmod 0400 /home/ec2-user/work.pem",
+            "chmod 0400 /home/ec2-user/${var.key_name}.pem",
         ]
     }
     provisioner "file" {
