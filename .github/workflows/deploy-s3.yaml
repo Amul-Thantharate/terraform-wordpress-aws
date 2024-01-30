@@ -3,7 +3,7 @@ name: Deploy Wordpress on Aws Ec2
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   terraform:
