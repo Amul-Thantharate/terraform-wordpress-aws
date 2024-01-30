@@ -86,17 +86,6 @@ resource "aws_instance" "wordpress" {
         private_key = tls_private_key.example.private_key_pem
         host        = aws_instance.wordpress.public_ip
     }
-
-    provisioner "file" {
-        source      = "${var.key_name}.pem"
-        destination = "/home/ec2-user/${var.key_name}.pem"
-    }
-
-    provisioner "remote-exec" {
-    inline = [
-            "chmod 0400 /home/ec2-user/${var.key_name}.pem",
-        ]
-    }
     provisioner "file" {
         source      = "wordpress.sh"
         destination = "/home/ec2-user/wordpress.sh"
