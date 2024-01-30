@@ -1,0 +1,46 @@
+name: Deploy Wordpress on Aws Ec2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: Deploy Infrastructure
+    runs-on: ubuntu-latest
+
+    env:
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        TF_VAR_aws_region: ${{ secrets.TF_VAR_aws_region }}
+        TF_VAR_private_subnet: ${{ secrets.TF_VAR_private_subnet }}
+        TF_VAR_public_subnet: ${{ secrets.TF_VAR_public_subnet }}
+        TF_VAR_vpc_id: ${{ secrets.TF_VAR_vpc_id }}
+        TF_VAR_key_name: ${{ secrets.TF_VAR_key_name }}
+
+    defaults:
+      run: 
+        working-directory: .
+
+    steps:
+      - name: Checkout Repo 
+        uses: actions/checkout@v2
+      
+      - name: Terraform Setup
+        uses: hashicorp/setup-terraform@v1
+      
+      - name: Terraform format
+        run: terraform fmt 
+      
+      - name: Terraform init
+        run: terraform init
+        
+      - name: Terraform validate
+        run: terraform validate
+      
+      - name: Terraform Plan
+        run: terraform plan
+      
+      - name: Terraform apply 
+        run: terraform apply --auto-approve 
